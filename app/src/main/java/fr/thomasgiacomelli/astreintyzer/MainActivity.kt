@@ -29,8 +29,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
+import fr.thomasgiacomelli.astreintyzer.ui.dialogs.InfoDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -133,6 +135,7 @@ fun AstreintyzerMainScreen(viewModel: AstreintyzerViewModel) {
 
     var showSettingsDialog by remember { mutableStateOf(false) }
     var showEndPeriodDialog by remember { mutableStateOf(false) }
+    var showInfoDialog by remember { mutableStateOf(false) }
     var isDebugMode by remember { mutableStateOf(CallStateManager.isDebugModeEnabled(context)) }
 
     var editingTask by remember { mutableStateOf<TaskEntity?>(null) }
@@ -186,6 +189,12 @@ fun AstreintyzerMainScreen(viewModel: AstreintyzerViewModel) {
                     )
                 },
                 actions = {
+                    IconButton(onClick = { showInfoDialog = true }) {
+                        Icon(
+                            imageVector = Icons.Default.Info,
+                            contentDescription = "À propos"
+                        )
+                    }
                     IconButton(onClick = { showSettingsDialog = true }) {
                         Icon(
                             imageVector = Icons.Default.Settings,
@@ -414,6 +423,10 @@ fun AstreintyzerMainScreen(viewModel: AstreintyzerViewModel) {
             onDeleteUser = { user -> viewModel.deleteUser(user) },
             onDismiss = { showSettingsDialog = false }
         )
+    }
+
+    if (showInfoDialog) {
+        InfoDialog(onDismiss = { showInfoDialog = false })
     }
 
     if (showEndPeriodDialog) {
